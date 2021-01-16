@@ -4,8 +4,8 @@ import { format } from 'date-fns';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { Content } from '../../content/Content';
+import { Main } from '../../layout/Main';
 import { Meta } from '../../layout/Meta';
-import { Main } from '../../templates/Main';
 import { getAllPosts, getPostBySlug } from '../../utils/Content';
 import { markdownToHtml } from '../../utils/Markdown';
 

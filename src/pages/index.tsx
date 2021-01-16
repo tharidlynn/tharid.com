@@ -3,9 +3,9 @@ import React from 'react';
 import { GetStaticProps } from 'next';
 
 import { BlogGallery, IBlogGalleryProps } from '../blog/BlogGallery';
+import { Main } from '../layout/Main';
 import { Meta } from '../layout/Meta';
 import { IPaginationProps } from '../pagination/Pagination';
-import { Main } from '../templates/Main';
 import { Config } from '../utils/Config';
 import { getAllPosts } from '../utils/Content';
 
@@ -17,6 +17,7 @@ const Index = (props: IBlogGalleryProps) => (
         description={Config.description}
       />
     )}
+    showInfo
   >
     <BlogGallery posts={props.posts} pagination={props.pagination} />
   </Main>

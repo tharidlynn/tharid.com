@@ -5,7 +5,7 @@ type INavbarProps = {
 };
 
 const Navbar = (props: INavbarProps) => (
-  <ul className="navbar flex flex-wrap text-xl">
+  <ul className="navbar flex justify-end text-xl">
     {props.children}
 
     <style jsx>
