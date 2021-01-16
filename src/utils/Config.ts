@@ -1,5 +1,3 @@
-import { url } from 'inspector';
-
 export const Config = {
   site_name: 'tharid.com',
   title: "Hi, I'm Tharid Lynn",
