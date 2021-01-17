@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 
 import Link from 'next/link';
 
-import { Navbar } from '../navigation/Navbar';
-import { Config } from '../utils/Config';
+import { Config } from '../lib/Config';
+import { Navbar } from './Navbar';
 
 type IMainProps = {
   meta: ReactNode;
@@ -39,7 +39,7 @@ const Main = (props: IMainProps) => (
           <div className="border-b border-gray-200">
             <div className="pt-4 pb-4">
               <div className="font-semibold text-3xl text-gray-900">{Config.title}</div>
-              <div className="text-xl">{Config.description}</div>
+              <div className="text-base">{Config.description}</div>
             </div>
           </div>
         ) : (

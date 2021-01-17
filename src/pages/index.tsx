@@ -2,12 +2,12 @@ import React from 'react';
 
 import { GetStaticProps } from 'next';
 
-import { BlogGallery, IBlogGalleryProps } from '../blog/BlogGallery';
-import { Main } from '../layout/Main';
-import { Meta } from '../layout/Meta';
-import { IPaginationProps } from '../pagination/Pagination';
-import { Config } from '../utils/Config';
-import { getAllPosts } from '../utils/Content';
+import { BlogGallery, IBlogGalleryProps } from '../components/BlogGallery';
+import { Main } from '../components/Main';
+import { Meta } from '../components/Meta';
+import { Config } from '../lib/Config';
+import { getAllPosts } from '../lib/Content';
+import { IPaginationProps } from '../components/Pagination';
 
 const Index = (props: IBlogGalleryProps) => (
   <Main

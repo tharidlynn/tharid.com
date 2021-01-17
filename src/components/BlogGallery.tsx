@@ -3,8 +3,8 @@ import React from 'react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 
-import { Pagination, IPaginationProps } from '../pagination/Pagination';
-import { PostItems } from '../utils/Content';
+import { PostItems } from '../lib/Content';
+import { Pagination, IPaginationProps } from './Pagination';
 
 export type IBlogGalleryProps = {
   posts: PostItems[];

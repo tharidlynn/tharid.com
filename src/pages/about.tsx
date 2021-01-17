@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Content } from '../content/Content';
-import { Main } from '../layout/Main';
-import { Meta } from '../layout/Meta';
+import { Content } from '../components/Content';
+import { Main } from '../components/Main';
+import { Meta } from '../components/Meta';
 
 const About = () => (
   <Main meta={<Meta title="Lorem ipsum" description="Lorem ipsum" />} showInfo>
