@@ -30,18 +30,23 @@ const Main = (props: IMainProps) => (
               </Link>
             </li>
             <li className="mr-6">
+              <Link href="/projects/">
+                <a>Projects</a>
+              </Link>
+            </li>
+            <li className="mr-6">
               <a href="https://github.com/tharidlynn">GitHub</a>
             </li>
           </Navbar>
         </div>
 
         {props.showInfo ? (
-          <div className="border-b border-gray-200">
-            <div className="pt-4 pb-4">
-              <div className="font-semibold text-3xl text-gray-900">{Config.title}</div>
-              <div className="text-base">{Config.description}</div>
-            </div>
+
+          <div className="pt-4 pb-4">
+            <div className="font-bold text-black text-3xl">{Config.title}</div>
+            <div className="text-base">{Config.description}</div>
           </div>
+
         ) : (
           ''
         )}
@@ -62,7 +67,9 @@ const Main = (props: IMainProps) => (
           {' '}
           by
           {' '}
-          <a href="https://momorith.com">Momorith</a>
+          <a href="https://momorith.com" className="text-gray-700 hover:text-gray-600 transition">
+            Momorith
+          </a>
         </div>
       </div>
     </div>

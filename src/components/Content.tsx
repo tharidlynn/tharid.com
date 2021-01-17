@@ -19,7 +19,7 @@ const Content = (props: IContentProps) => (
         }
 
         .content :global(h2) {
-          @apply text-2xl font-semibold text-gray-700 my-4;
+          @apply text-4xl text-black font-bold;
         }
 
         .content :global(h3) {

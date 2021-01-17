@@ -37,11 +37,31 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
   return items;
 }
 
+export function getPostByPopular(slug: string) {
+  const realSlug = slug.replace(/\.md$/, '');
+  const fullPath = join(postsDirectory, `${realSlug}.md`);
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  const { data } = matter(fileContents);
+
+  if (data.popular) { return true; } return false;
+}
+
 export function getAllPosts(fields: string[] = []) {
   const slugs = getPostSlugs();
   const posts = slugs
     .map((slug) => getPostBySlug(slug, fields))
     // sort posts by date in descending order
     .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
+  return posts;
+}
+
+export function getAllPopular(fields: string[] = []) {
+  const slugs = getPostSlugs();
+  const posts = slugs
+    .filter((slug) => getPostByPopular(slug))
+    .map((slug) => getPostBySlug(slug, fields))
+    // sort posts by date in descending order
+    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
+
   return posts;
 }

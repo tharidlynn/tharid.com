@@ -5,7 +5,7 @@ a {
 }
 
 a:hover {
-  @apply underline;
+  @apply no-underline;
 }
 
 @tailwind components;
