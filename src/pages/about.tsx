@@ -1,15 +1,13 @@
 import React from 'react';
 
 import { Content } from '../components/Content';
-import { Main } from '../components/Main';
+import { Layout } from '../components/Layout';
 import { Meta } from '../components/Meta';
 
 const About = () => (
-  <Main meta={<Meta title="Lorem ipsum" description="Lorem ipsum" />} showInfo>
+  <Layout meta={<Meta title="Lorem ipsum" description="Lorem ipsum" />} showInfo>
     <Content>
-      <h2>
-        Where I worked
-      </h2>
+      <h2>Where I worked</h2>
       <ul className="list-disc">
         <li>
           <a target="_blank" rel="noopener noreferrer" href="https://cysec.systems/">
@@ -220,7 +218,7 @@ const About = () => (
       </ul>
       <br />
     </Content>
-  </Main>
+  </Layout>
 );
 
 export default About;

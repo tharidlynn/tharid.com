@@ -11,12 +11,12 @@ type IMainProps = {
   children: ReactNode;
 };
 
-const Main = (props: IMainProps) => (
+const Layout = (props: IMainProps) => (
   <>
     <div className="antialiased w-full text-gray-700">
       {props.meta}
 
-      <div className="max-w-screen-md mx-auto px-6 md:px-10">
+      <div className="max-w-screen-md mx-auto px-8">
         <div className="pt-16 pb-4">
           <Navbar>
             <li className="mr-6">
@@ -41,17 +41,15 @@ const Main = (props: IMainProps) => (
         </div>
 
         {props.showInfo ? (
-
           <div className="pt-4 pb-4">
-            <div className="font-bold text-black text-3xl">{Config.title}</div>
+            <div className="font-semibold text-black text-2xl">{Config.title}</div>
             <div className="text-base">{Config.description}</div>
           </div>
-
         ) : (
           ''
         )}
 
-        <div className="text-xl py-5">{props.children}</div>
+        <div className="text-lg py-5">{props.children}</div>
 
         <div className="border-t border-gray-300 text-center py-8 text-sm">
           © Copyright
@@ -76,4 +74,4 @@ const Main = (props: IMainProps) => (
   </>
 );
 
-export { Main };
+export { Layout };

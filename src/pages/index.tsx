@@ -3,7 +3,7 @@ import React from 'react';
 import { GetStaticProps } from 'next';
 
 import { BlogGallery } from '../components/BlogGallery';
-import { Main } from '../components/Main';
+import { Layout } from '../components/Layout';
 import { Meta } from '../components/Meta';
 import { IPaginationProps } from '../components/Pagination';
 import { Config } from '../lib/Config';
@@ -16,7 +16,7 @@ export type IndexProps = {
 };
 
 const Index = (props: IndexProps) => (
-  <Main
+  <Layout
     meta={(
       <Meta
         title="Made with Next.js, TypeScript, ESLint, Prettier, PostCSS, Tailwind CSS"
@@ -26,11 +26,11 @@ const Index = (props: IndexProps) => (
     showInfo
   >
     <h2 className="text-4xl text-black font-bold mb-3">Most Popular</h2>
-    <BlogGallery posts={props.popularPosts} pagination={props.pagination} />
+    <BlogGallery type="popular" posts={props.popularPosts} pagination={props.pagination} />
 
     <h2 className="text-4xl text-black font-bold mb-3">All Posts</h2>
-    <BlogGallery posts={props.posts} pagination={props.pagination} />
-  </Main>
+    <BlogGallery type="posts" posts={props.posts} pagination={props.pagination} />
+  </Layout>
 );
 
 export const getStaticProps: GetStaticProps<IndexProps> = async () => {

@@ -3,21 +3,21 @@ import React from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { BlogGallery, IBlogGalleryProps } from '../components/BlogGallery';
-import { Main } from '../components/Main';
+import { Layout } from '../components/Layout';
 import { Meta } from '../components/Meta';
+import { IPaginationProps } from '../components/Pagination';
 import { Config } from '../lib/Config';
 import { getAllPosts } from '../lib/Content';
 import { convertTo2D } from '../lib/Pagination';
-import { IPaginationProps } from '../components/Pagination';
 
 type IPageUrl = {
   page: string;
 };
 
 const PaginatePosts = (props: IBlogGalleryProps) => (
-  <Main meta={<Meta title="Lorem ipsum" description="Lorem ipsum" />} showInfo={false}>
+  <Layout meta={<Meta title="Lorem ipsum" description="Lorem ipsum" />} showInfo>
     <BlogGallery posts={props.posts} pagination={props.pagination} />
-  </Main>
+  </Layout>
 );
 
 export const getStaticPaths: GetStaticPaths<IPageUrl> = async () => {

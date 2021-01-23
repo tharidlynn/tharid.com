@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { Content } from '../../components/Content';
-import { Main } from '../../components/Main';
+import { Layout } from '../../components/Layout';
 import { Meta } from '../../components/Meta';
 import { getAllPosts, getPostBySlug } from '../../lib/Content';
 import { markdownToHtml } from '../../lib/Markdown';
@@ -18,18 +18,16 @@ type IPostProps = {
   description: string;
   date: string;
   modified_date: string;
-  image: string;
   content: string;
 };
 
 const DisplayPost = (props: IPostProps) => (
-  <Main
+  <Layout
     meta={(
       <Meta
         title={props.title}
         description={props.description}
         post={{
-          image: props.image,
           date: props.date,
           modified_date: props.modified_date,
         }}
@@ -46,7 +44,7 @@ const DisplayPost = (props: IPostProps) => (
         dangerouslySetInnerHTML={{ __html: props.content }}
       />
     </Content>
-  </Main>
+  </Layout>
 );
 
 export const getStaticPaths: GetStaticPaths<IPostUrl> = async () => {
@@ -68,7 +66,6 @@ export const getStaticProps: GetStaticProps<IPostProps, IPostUrl> = async ({ par
     'description',
     'date',
     'modified_date',
-    'image',
     'content',
     'slug',
   ]);
@@ -80,7 +77,6 @@ export const getStaticProps: GetStaticProps<IPostProps, IPostUrl> = async ({ par
       description: post.description,
       date: post.date,
       modified_date: post.modified_date,
-      image: post.image,
       content,
     },
   };

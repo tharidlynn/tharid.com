@@ -1,15 +1,13 @@
 import React from 'react';
 
 import { Content } from '../components/Content';
-import { Main } from '../components/Main';
+import { Layout } from '../components/Layout';
 import { Meta } from '../components/Meta';
 
 const Projects = () => (
-  <Main meta={<Meta title="Lorem ipsum" description="Lorem ipsum" />} showInfo>
+  <Layout meta={<Meta title="Lorem ipsum" description="Lorem ipsum" />} showInfo>
     <Content>
-      <h2 className="mb-4">
-        Projects
-      </h2>
+      <h2 className="mb-4">Projects</h2>
       <div className="mb-4">
         <a
           className="hover:shadow"
@@ -109,7 +107,7 @@ const Projects = () => (
         </a>
       </div>
     </Content>
-  </Main>
+  </Layout>
 );
 
 export default Projects;
