@@ -18,6 +18,7 @@ type IPostProps = {
   description: string;
   date: string;
   modified_date: string;
+  image: string;
   content: string;
 };
 
@@ -28,6 +29,7 @@ const DisplayPost = (props: IPostProps) => (
         title={props.title}
         description={props.description}
         post={{
+          image: props.image,
           date: props.date,
           modified_date: props.modified_date,
         }}
@@ -35,8 +37,8 @@ const DisplayPost = (props: IPostProps) => (
     )}
     showInfo={false}
   >
-    <h1 className="text-center font-bold text-3xl text-gray-900">{props.title}</h1>
-    <div className="text-center text-sm mb-8">{format(new Date(props.date), 'LLLL d, yyyy')}</div>
+    <h1 className="text-center font-bold text-3xl text-gray-900 mt-2">{props.title}</h1>
+    <div className="text-center text-sm mb-8">{format(new Date(props.date), 'MMM d, yyyy')}</div>
 
     <Content>
       <div
@@ -66,6 +68,7 @@ export const getStaticProps: GetStaticProps<IPostProps, IPostUrl> = async ({ par
     'description',
     'date',
     'modified_date',
+    'image',
     'content',
     'slug',
   ]);
@@ -77,6 +80,7 @@ export const getStaticProps: GetStaticProps<IPostProps, IPostUrl> = async ({ par
       description: post.description,
       date: post.date,
       modified_date: post.modified_date,
+      image: post.image,
       content,
     },
   };

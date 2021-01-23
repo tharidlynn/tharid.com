@@ -6,5 +6,5 @@ export const Config = {
   url: 'https://tharid.com',
   locale: 'en',
   author: 'Tharid',
-  pagination_size: 10,
+  pagination_size: 15,
 };

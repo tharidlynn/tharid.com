@@ -1,11 +1,13 @@
 ---
 title: 'Cassandra in a nutshell'
+description: 'ย้อนกลับไปเมื่อปี 2007 Amazon ต้องการแก้ปัญหา relational database ของตัวเองที่ไม่สามารถ scale ได้ดั่งใจอยาก ทีมงานของ Amazon จึงตัดสินใจคิดค้น database ใหม่ขึ้นมา'
 date: '2019-01-02'
 modified_date: '2019-01-02'
+image: '/assets/images/posts/cassandra-write.png'
 ---
 
 
-ย้อนกลับไปเมื่อปี 2007 Amazon ต้องการแก้ปัญหา relational database ของตัวเองที่ไม่สามารถ scale ได้ดั่งใจอยาก ทีมงานของ Amazon จึงตัดสินใจคิดค้น database ใหม่ที่ไม่ใช้ consistency ของ SQL แต่นำเสนอการใช้ eventual consistency เข้ามาแทน พร้อมยังเผยแพร่ [Dynamo paper](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf) เพื่ออธิบายหลักคิดทั้งหมดของแนวคิดนี้อีกด้วย  <!--more-->
+ย้อนกลับไปเมื่อปี 2007 Amazon ต้องการแก้ปัญหา relational database ของตัวเองที่ไม่สามารถ scale ได้ดั่งใจอยาก ทีมงานของ Amazon จึงตัดสินใจคิดค้น database ใหม่ที่ไม่ใช้ consistency ของ SQL แต่นำเสนอการใช้ eventual consistency เข้ามาแทน พร้อมยังเผยแพร่ [Dynamo paper](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf) เพื่ออธิบายหลักคิดทั้งหมดของแนวคิดนี้อีกด้วย  
 
 ผ่านไปแค่ปีเดียวหลังจากที่ Dynamo paper ถูกเผยแพร่ Facebook ก็ดำเนินมาถึงจุดที่ Amazon เคยประสบปัญหาเช่นกัน คือต้องการ scale  Inbox Search ให้เร็วกว่าที่เป็นอยู่  Facebook จึงตัดสินใจคิดค้น Cassandra ขึ้นมาแก้ปัญหา โดยได้รับแรงบันดาลใจทั้งจาก  Dynamo และ [BigTable](https://static.googleusercontent.com/media/research.google.com/en//archive/bigtable-osdi06.pdf)  
 
@@ -33,11 +35,9 @@ modified_date: '2019-01-02'
 
 เนื่องจากการอธิบาย Cassandra ในบทเดียวเป็นไปได้ยากมาก สำหรับคนที่ยังงงๆอยู่ ให้ข้ามไปอ่านวิธีการทำงานได้เลยครับ
 
-<figure>
-<img src="/img/cassandra-token-ring.png" alt="cassandra-token-ring" title="cassandra-token-ring" style="max-width:60%;" />
-<figcaption>
-</figcaption>
-</figure>
+![cassandra-token-ring](@@baseUrl@@/assets/images/posts/cassandra-token-ring.png)
+*Spanner paper*
+
 
 * Node: เครื่องคอมใน cluster หลายๆ nodes รวมกันเป็น cluster
 * Token ring: แต่ละ node ใน cluster จะได้รับหน้าที่ในการดูแล token ไม่เหมือนกัน เรียกว่า token range
@@ -63,12 +63,8 @@ Cassandra ใช้หลักการทำงานที่เรียก�
 
 ### Write
 
-<figure>
-<img src="/img/cassandra-write.png" alt="cassandra-write" title="cassandra-write" style="max-width:80%;" />
-<figcaption>
-https://docs.datastax.com/en/archived/cassandra/3.0/cassandra/dml/dmlHowDataWritten.html
-</figcaption>
-</figure>
+![cassandra-write](@@baseUrl@@/assets/images/posts/cassandra-write.png)
+*https://docs.datastax.com/en/archived/cassandra/3.0/cassandra/dml/dmlHowDataWritten.html*
 
 
 1. เลือก node ที่จะ write โดยทำการ hash primary key เพื่อหา token value ที่เหมาะสมและหา node ที่ดูแล token range นั้นๆอยู่
@@ -80,23 +76,17 @@ https://docs.datastax.com/en/archived/cassandra/3.0/cassandra/dml/dmlHowDataWrit
 7. เพื่อแก้ปัญหา update/delete และเป็นการ save พื้นที่ใน disk ด้วยไปในตัว Cassandra จะใช้เทคนิคที่เรียกว่า Compaction - merge หลายๆ SSTable เล็กเข้าด้วยกันและใช้ timestamp เป็นตัวดูว่า record ใน SSTable ไหนใหม่กว่ากัน และจะ return SSTable ที่มี data ใหม่ที่สุดตาม timestamp (last-write-wins) 
 8. หลักการลบก็คล้ายๆกัน โดยใช้ Tomestone mark row ที่จะ delete ไว้แล้วค่อยมาทำ Batch deletion ทีเดียวตอน compact segement file เลย
 
-<figure>
-<img src="/img/cassandra-compaction.png" alt="cassandra-compaction" title="cassandra-compaction" style="max-width:70%;" />
-<figcaption>
-https://docs.datastax.com/en/archived/cassandra/3.0/cassandra/dml/dmlHowDataMaintain.html
-</figcaption>
-</figure>
+![cassandra-compaction](@@baseUrl@@/assets/images/posts/cassandra-compaction.png)
+*https://docs.datastax.com/en/archived/cassandra/3.0/cassandra/dml/dmlHowDataMaintain.html*
+
 
 
 
 ### Read
 
-<figure>
-<img src="/img/cassandra-read.png" alt="cassandra-read" title="cassandra-read" style="max-width:80%;" />
-<figcaption>
-https://docs.datastax.com/en/archived/cassandra/3.0/cassandra/dml/dmlAboutReads.html
-</figcaption>
-</figure>
+
+![cassandra-read](@@baseUrl@@/assets/images/posts/cassandra-read.png)
+*https://docs.datastax.com/en/archived/cassandra/3.0/cassandra/dml/dmlAboutReads.html*
 
 
 1. Client สามารถเริ่มอ่านจาก nodeใดก็ได้ โดยตัว Cassandra เองจะเลือกให้เราตาม closest location, non-busy node หรือ random 

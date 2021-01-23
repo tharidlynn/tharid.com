@@ -1,11 +1,10 @@
 ---
 title: 'Lambda และ Kappa architecture'
-description: 'Nathan Marz ได้เขียนบทความอธิบายเกี่ยวกับ [Lambda architecture](http://nathanmarz.com/blog/how-to-beat-the-cap-theorem.html) ไว้อย่างละเอียดยิบ ในบทนี้ผมขอสรุปเท่าที่ผมเข้าใจละกันครับ'
+description: 'Nathan Marz ได้เขียนบทความอธิบายเกี่ยวกับ Lambda architecture ไว้อย่างละเอียดยิบ ในบทนี้ผมขอสรุปเท่าที่ผมเข้าใจละกันครับ'
 date: '2019-01-24'
 modified_date: '2019-01-24'
+image: '/assets/images/posts/random-img.jpg'
 ---
-
-
 
 Nathan Marz ได้เขียนบทความอธิบายเกี่ยวกับ [Lambda architecture](http://nathanmarz.com/blog/how-to-beat-the-cap-theorem.html) ไว้อย่างละเอียดยิบ ในบทนี้ผมขอสรุปเท่าที่ผมเข้าใจละกันครับ
  
@@ -51,9 +50,9 @@ Answer: Kafka เนื่องจากทำ Replay ได้ + write high th
 แต่ Jay kreps, หนึ่งในผู้สร้าง Kafka ไม่ได้เห็นด้วยกับ Lambda architecture ไปซะทั้งหมด เขามองว่าปัญหาใหญ่ที่สุดของ Lambda architecture คือการที่เราต้องดูแล data pipeline ที่เขียน code ก็ไม่เหมือนกันถึง 2 pipelines คงพอนึกภาพออกว่า ต้องใช้ทั้ง Spark, Storm, Samza, Storm, MapReduce มั่วกันไปหมด วิธีแก้คือทำยังไงให้เอา Batch layer ออกไปจากสมการ เพราะยังไงทุกวันนี้ก็ต้องทำ Realtime layer อยู่แล้ว และนั้นคือที่มาของ [Kappa architecture](https://www.oreilly.com/ideas/questioning-the-lambda-architecture)
 
 
-ทางแก้ที่ 1: ใช้ [Apache Beam](https://beam.apache.org/) - project ที่ถือกำเนิดมาจาก [Dataflow](https://cloud.google.com/dataflow/) บน Google cloud วิธีคือ unified model ของ batch และ stream processing เข้าด้วยกัน พูดง่ายๆคือเขียน code ครั้งเดียวได้ 2 pipeline โดยตัว Beam จะเหมือนเป็น higher API มาครอบอยู่บน Spark, Flink อีกทีครับ 
+**ทางแก้ที่ 1**: ใช้ [Apache Beam](https://beam.apache.org/) - project ที่ถือกำเนิดมาจาก [Dataflow](https://cloud.google.com/dataflow/) บน Google cloud วิธีคือ unified model ของ batch และ stream processing เข้าด้วยกัน พูดง่ายๆคือเขียน code ครั้งเดียวได้ 2 pipeline โดยตัว Beam จะเหมือนเป็น higher API มาครอบอยู่บน Spark, Flink อีกทีครับ 
 
-_Note: Spark และ Flink ในปัจจุบันเขียนง่ายกว่าแต่ก่อนมากเนื่องจากใช้ SQL และ Dataframe เป็น API หลัก แถมยังสามารถโยกย้ายจาก batch และ stream ด้วย API เดิมๆ โดยส่วนตัวแล้วจึงไม่ค่อยเห็นประโยชน์ของ Apache Beam เท่าไรเนื่องจากเหมือนไปเพิ่ม complexity เพิ่มอีก layer ยกเว้นในกรณีใช้ Google Dataflow บน Google cloud_
+> Note: Spark และ Flink ในปัจจุบันเขียนง่ายกว่าแต่ก่อนมากเนื่องจากใช้ SQL และ Dataframe เป็น API หลัก แถมยังสามารถโยกย้ายจาก batch และ stream ด้วย API เดิมๆ โดยส่วนตัวแล้วจึงไม่ค่อยเห็นประโยชน์ของ Apache Beam เท่าไรเนื่องจากเหมือนไปเพิ่ม complexity เพิ่มอีก layer ยกเว้นในกรณีใช้ Google Dataflow บน Google cloud
 
-ทางแก้ที่ 2: ใช้ exactly once stream processing - ในอดีต การทำ exactly once processing ยากมาก แต่วันนี้เรามีหลายๆ tools ที่ทำได้แล้ว เช่น Kafka streams, Flink on Kafka, Storm with Trident หรือแม้แต่การใช้ Spark เป็นต้น เพราะงั้นปัญหาที่เราเจอเรื่อง accuracy ก็ไม่มีอีกต่อไป พอไม่มีก็ยุบมันให้เหลือ layer เดียวคือ Real time layer ก็จบ
+**ทางแก้ที่ 2**: ใช้ exactly once stream processing - ในอดีต การทำ exactly once processing ยากมาก แต่วันนี้เรามีหลายๆ tools ที่ทำได้แล้ว เช่น Kafka streams, Flink on Kafka, Storm with Trident หรือแม้แต่การใช้ Spark เป็นต้น เพราะงั้นปัญหาที่เราเจอเรื่อง accuracy ก็ไม่มีอีกต่อไป พอไม่มีก็ยุบมันให้เหลือ layer เดียวคือ Real time layer ก็จบ
 

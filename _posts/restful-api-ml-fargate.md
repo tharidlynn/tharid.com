@@ -1,13 +1,13 @@
 ---
-title = "Restful API + ML model with fargate"
-date = 2019-01-11
-tags = ["fargate", "scikitlearn", "aws", "machinelearning", "docker"]
-categories = ["datascience"]
-draft = false
+title: "Restful API + ML model with fargate"
+description: 'Machine Learning on Fargate is easy if you know how to use docker'
+date: '2019-01-11'
+modified_date: '2019-01-11'
+image: '/assets/images/posts/create-cluster.gif'
 ---
-<!--more-->
+
 ## Training a model
-```
+```python
 # train.py
 
 from sklearn.datasets import load_iris
@@ -30,7 +30,7 @@ We use the joblib module to serialize the model so that we can load it back duri
 ## Restful API
 In this post, I'm going to use [Flask](http://flask.pocoo.org/) as our web framework. You can pick whatever frameworks you're most comfortable with as long as they are able to return the **json** to  clients.
 
-```
+```python
 # app.py
 
 import numpy as np
@@ -66,20 +66,30 @@ According to the code above, we tell Flask to load our training model, predict t
 To run that, follow these 3 easy steps:
 
 1. Start the Flask web server by running `python app.py`
-2. Send some data to the server. I send via curl `curl -H "Content-Type: application/json" -X GET -d '{"payload": [3,2,1,4]}' http://localhost:5000/predict`
-3. The result is neat. `{
+2. Send some data to the server. For example, `curl` 
+
+```bash
+curl -H "Content-Type: application/json" -X GET -d '{"payload": [3,2,1,4]}' http://localhost:5000/predict
+```
+
+3. The result is neat. 
+
+```bash
+{
   "prediction": [
     2
   ]
-}`
+}
+```
 
 ## Docker
 We're gonna wrap everything we've written as a container and push it to [Amazon Elastic Container Registry](https://aws.amazon.com/ecr/) so that [Amazon Fargate](https://aws.amazon.com/fargate/) could pull it. But, before that, we need to ensure that our container also works in the local development.
 
 ### Local development
 
+> Gunicorn has better performance than Flask server.
 
-```
+```docker
 # Dockerfile
 
 FROM python:3.7.2-slim
@@ -97,12 +107,9 @@ ENTRYPOINT [ "gunicorn" ]
 CMD ["-w 4", "-b :5000", "app:app"]
 ```
 
->Gunicorn has better performance than Flask server.
-
-
 Let's test that !
 
-```
+```bash
 $ docker build -t flask-api .
 $ docker run -it -p 5000:5000 --rm flask-api
 $ curl -H "Content-Type: application/json" -X GET -d '{"payload": [3,2,1,4]}' http://localhost:5000/predict
@@ -116,13 +123,13 @@ $ curl -H "Content-Type: application/json" -X GET -d '{"payload": [3,2,1,4]}' ht
 
 ### ECR
 
-_Note: If you still do not have aws-cli, the installation guide is [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)_.
+**Note: If you still do not have aws-cli, the installation guide is [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)**
 
 We can now push our container to Amazon ECR. The whole process here is to create new repository on ECR and push our local container to it.
 
 Firstly, go to your ECR console and create a new repository for your container. You can also use these command if you prefer: 
 
-```
+```bash
 $ AWS_DEFAULT_REGION=ap-southeast-1
 
 $ eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
@@ -132,13 +139,13 @@ $ aws ecr create-repository --repository-name flask-api
 
 Then we tag, 
 
-```
+```bash
 $ docker tag flask-api 123523539192.dkr.ecr.ap-southeast-1.amazonaws.com/flask-api
 ```
 
-and push it with 
+and push it with:
 
-```
+```bash
 $ docker push 123523539192.dkr.ecr.ap-southeast-1.amazonaws.com/flask-api
 ```
 
@@ -148,7 +155,7 @@ Managing docker in the production is difficult and complicated some time. Fortun
 
 Nonetheless, our container is quite simple and no need to plug with a heavy-weight tool like Kubernetes. Thus, Fargate is a better candidate for this small app. 
 
->For people who don't know what Fargate is; it is the AWS service which can run containers without having to manage servers or clusters. In another word, zero operation comparing to other tools.
+> For people who don't know what Fargate is; it is the AWS service which can run containers without having to manage servers or clusters. In another word, zero operation comparing to other tools.
 
 You need only 3 mininum things to make Fargate works:
 
@@ -158,32 +165,30 @@ You need only 3 mininum things to make Fargate works:
 
 #### Amazon ECS cluster
 Let's create the ECS cluster first by heading to ECS cluster and click create cluster with fargate template.
-<figure>
-  <img src="/img/create-cluster.gif" alt="fargate-cluster" title="fargate-cluster" style="max-width:80%;" />
-    <figcaption>How to create the cluster</figcaption>
-</figure>
+
+![fargate-cluster](@@baseUrl@@/assets/images/posts/create-cluster.gif)
+*How to create the cluster*
+
 
 Hooray! Now you have the running cluster. But, without any tasks, it's completely futile.
 
 #### Task definition
 Task definitions are like a blueprint. ECS cluster (Fargate) will initiate their own tasks based on the task definitions we've manifested.
-<figure>
-  <img src="/img/create-task-def.gif" alt="task-definitions" title="task-definitions" style="max-width:80%;" />
-  <figcaption>How to create a task definition</figcaption>
-</figure>
+
+![task-definitions](@@baseUrl@@/assets/images/posts/create-task-def.gif)
+*>How to create a task definition*
 
 #### Run new task
 After manifesting our task's blueprint (task definition), just go to your cluster, select Tasks's tab and Run new task. 
 
-The most critical part is to allow port 5000 in your security group and also assign a public ip to your task.
-<figure>
-  <img src="/img/create-task.gif" alt="run-task" title="run-task" style="max-width:80%;" />
-  <figcaption>How to create a new task</figcaption>
-</figure>
+The most critical part is to allow port `5000` in your security group and also assign a public ip to your task.
+
+![run-task](@@baseUrl@@/assets/images/posts/create-task.gif)
+*>How to create a new task<*
 
 And as always, you can test your container using the old trick you did
 
-```
+```bash
 $ curl -H "Content-Type: application/json" -X GET -d '{"payload": [3,2,1,4]}' 18.138.225.173:5000/predict
 
 {"prediction":[2]}

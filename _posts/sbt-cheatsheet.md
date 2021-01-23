@@ -1,13 +1,14 @@
 ---
 title: 'sbt command cheat sheet'
-description: ''
+description: 'You can chain several commands together using space as the delimeter'
 date: '2018-08-10'
 modified_date: '2018-08-10'
+image: '/assets/images/posts/random-img.jpg'
 ---
 
 
 You can chain several commands together using space as the delimeter e.g.```sbt clean reload compile run``` .
- <!--more-->
+
 | Command         | Action    |
 | ------------- |-------------|
 | ```clean```     | Deletes all generated files (in the target directory).|

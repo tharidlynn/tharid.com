@@ -1,12 +1,14 @@
 ---
 title: 'Cronjob'
+description: 'A very useful website: https://crontab.guru'
 date: '2018-07-13'
 modified_date: '2018-07-13'
+image: '/assets/images/posts/random-img.jpg'
 ---
 
 A very useful website: https://crontab.guru
- <!--more-->
-```
+ 
+```bash
 # ┌───────────── minute (0 - 59)
 # │ ┌───────────── hour (0 - 23)
 # │ │ ┌───────────── day of month (1 - 31)

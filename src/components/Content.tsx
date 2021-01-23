@@ -21,7 +21,7 @@ const Content = (props: IContentProps) => {
       <style jsx>
         {`
           .content :global(p) {
-            @apply my-6;
+            @apply my-6 leading-7;
           }
 
           .content :global(h2) {
@@ -33,11 +33,15 @@ const Content = (props: IContentProps) => {
           }
 
           .content :global(h4) {
-            @apply text-lg font-semibold text-gray-700 my-4;
+            @apply text-lg font-semibold text-black my-4;
           }
 
           .content :global(em) {
             @apply text-sm;
+          }
+
+          .content :global(img) {
+            @apply mx-auto;
           }
 
           .content :global(blockquote) {
@@ -52,9 +56,18 @@ const Content = (props: IContentProps) => {
             @apply list-decimal my-6 px-8;
           }
 
+          .content :global(li) {
+            @apply leading-8;
+          }
+
           .content :global(a) {
             @apply text-blue-500 underline font-semibold hover:text-blue-700;
           }
+
+          .content :global(code) {
+            @apply text-sm;
+          }
+
         `}
       </style>
     </div>

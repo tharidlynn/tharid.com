@@ -1,12 +1,13 @@
 ---
 title: 'How to calculate WCUs/RCUs in DynamoDB'
-description: ''
+description: "DynamoDB is a managed NoSQL database. The main selling point is that developers won't experience any operational overheads maintaining it"
 date: '2018-04-26'
 modified_date: '2018-04-26'
+image: '/assets/images/posts/random-img.jpg'
 ---
 
 [DynamoDB](https://aws.amazon.com/dynamodb/) is a managed NoSQL database. The main selling point is that developers won't experience any operational overheads maintaining it.
- <!--more-->
+
 Nevertheless, since it's a proprietary database, the architecture is a real blackbox. AWS said that there are numerous differences from the [Dynamo paper](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf) and every developer should strictly follows their documentations for the best practice.
 
 One of the challeges in their documentation is to calculate and reserve the total numbers of RCUs/WCUs for tables. 
@@ -53,4 +54,4 @@ Requirement: write 20 kb data per second
 
 * Eventual consistency: ( round(20 / 4) ) / 2 = 2.5 RCUs
 
-_Note: In this post, I'm  talking about reserved requests (provisioning). However, recently, there is a new pricing model, "On demand", which literally is not what I mean in this context._
+> Note: In this post, I'm  talking about reserved requests (provisioning). However, recently, there is a new pricing model, "On demand", which literally is not what I mean in this context

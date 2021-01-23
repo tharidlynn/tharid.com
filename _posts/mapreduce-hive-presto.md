@@ -1,12 +1,13 @@
 ---
 title: "เมื่อ Map reduce ไม่สนุกเท่า Hive และ Presto"
-description: ''
+description: 'จากความพยายามที่ต้องการทำให้ MapReduce ใช้งานง่ายขึ้น จึงมีการนำภาษาอื่นที่ไม่ใช่การเขียน Java เข้ามาแทน ไม่ว่าจะเป็นการคิด Pig แต่หนึ่งในวิธีที่ได้รับการต้อนรับที่ดีกว่าวิธีอื่นคือการใช้ SQL'
 date: '2019-02-12'
 modified_date: '2019-02-12'
+image: '/assets/images/posts/presto-architecture.png'
 ---
 
-จากความพยายามที่ต้องการทำให้ MapReduce ใช้งานง่ายขึ้น จึงมีการนำภาษาอื่นที่ไม่ใช่การเขียน Java เข้ามาแทน ไม่ว่าจะเป็นการคิด[Pig](https://pig.apache.org/) เป็นต้น  แต่หนึ่งในวิธีที่ได้รับการต้อนรับที่ดีกว่าวิธีอื่นคือการใช้ SQL - ภาษาที่มีการวิจัยมายาวนานกว่า 40 ปีครับ 
- <!--more-->
+จากความพยายามที่ต้องการทำให้ MapReduce ใช้งานง่ายขึ้น จึงมีการนำภาษาอื่นที่ไม่ใช่การเขียน Java เข้ามาแทน ไม่ว่าจะเป็นการคิด [Pig](https://pig.apache.org/) เป็นต้น  แต่หนึ่งในวิธีที่ได้รับการต้อนรับที่ดีกว่าวิธีอื่นคือการใช้ SQL - ภาษาที่มีการวิจัยมายาวนานกว่า 40 ปีครับ 
+
 ## Hive
 ทำไมเราต้องใช้ Java ด้วยในเมื่อทีม data ของเราทุกคนรู้ SQL กันอยู่แล้ว? นั้นคือวิธีการแก้ปัญหาของทีม Facebook ที่ต้องการจัดการกับข้อมูลขนาดใหญ่ด้วย SQL บน Hadoop เลยคิดค้น [Hive](https://hive.apache.org/) ขึ้นมาก่อนที่จะเข้าสู่โครงการ Apache เต็มตัวและกลายเป็น project ที่ได้รับความนิยมสูงมากในเวลาต่อมา
 
@@ -14,12 +15,8 @@ Hive ถูกสร้างมาเพื่อใช้งานแทนก
 
 <br/>
 
-<figure>
-<img src="/img/hive-architecture.png" alt="hive-architecture" title="hive-architecture" style="max-width:100%;" />
-<figcaption>
-https://cwiki.apache.org/confluence/display/Hive/Design
-</figcaption>
-</figure>
+![hive-architecture](@@baseUrl@@/assets/images/posts/hive-architecture.png)
+*https://cwiki.apache.org/confluence/display/Hive/Design*
 
 
 ### HiveQL
@@ -38,12 +35,9 @@ https://cwiki.apache.org/confluence/display/Hive/Design
 
 ## Presto
 
-<figure>
-<img src="/img/presto-architecture.png" alt="presto-architecture" title="presto-architecture" style="max-width:80%;" />
-<figcaption>
-http://prestodb.github.io/overview.html
-</figcaption>
-</figure>
+![presto-architecture](@@baseUrl@@/assets/images/posts/presto-architecture.png)
+*http://prestodb.github.io/overview.html*
+
 
 Facebook ไม่หยุดแค่ที่ Hive เพราะ Facebook engineers มองเห็นว่าหากเราไปทำงานบน memory แทน disk ล่ะ? นั้นคือที่มาของ project ใหม่คือ [Presto](http://prestodb.github.io/) โดยได้รับแรงบันดาลใจจาก [Dremel](https://ai.google/research/pubs/pub36632) ของ Google (เบื้องหลังการทำงาน [BigQuery](https://cloud.google.com/bigquery/)) ซึ่งมี performance ที่ดีกว่า Hive แบบเดิมๆเป็นอย่างมาก
 
@@ -61,12 +55,8 @@ Presto เรียกตัวเองว่า Distributed SQL query engine f
 
 จริงๆแล้วยังมีเครื่องไม้เครื่องมืออื่นอีกที่ไม่ได้กล่าวถึงอย่าง [Impala](https://www.cloudera.com/documentation/enterprise/5-3-x/topics/impala_intro.html) ของทาง Cloudera ซึ่งเปิดตัวในปี 2012 และดูเหมือนจะประสบความสำเร็จในช่วงระยะเวลาหนึ่ง (เท่าที่ผมทราบ น่าจะเป็นเครื่องมือเดียวเลยที่ Cloudera ปล่อยออกมาแล้ว community เห็นดีเห็นชอบด้วย) แต่ข้อเสียหลักของ Impala คือทำงานได้ดีกับ HDFS เท่านั้น ผิดกับ Presto ที่จะ query บน S3 หรือ Database อื่นๆได้ครับ
 
-<figure>
-<img src="/img/impala-architecture.jpeg" alt="impala-architecture" title="impala-architecture" style="max-width:50%;" />
-<figcaption>
-https://www.cloudera.com/documentation/enterprise/5-3-x/topics/impala_intro.html
-</figcaption>
-</figure>
+![impala-architecture](@@baseUrl@@/assets/images/posts/impala-architecture.jpeg)
+*https://www.cloudera.com/documentation/enterprise/5-3-x/topics/impala_intro.html*
 
 
 สำหรับหลายๆคนที่คุ้นเคยกับ Spark โดยเฉพาะ SparkSQL อาจสงสัยว่าทำไมมันดูคล้ายๆกันเลย แบบนี้ใช้แทนกันได้ไหม ผมว่ามันเหมาะกับงานคนละประเภท 

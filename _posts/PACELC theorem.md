@@ -1,13 +1,14 @@
 ---
 title: 'PACELC theorem'
-description: ''
+description: 'PACELC theorem is the theory purposing the importance of latency and consistency in the distributed systems when they are in the absence of network partitions.'
 date: '2019-02-17'
 modified_date: '2019-02-17'
+image: '/assets/images/posts/random-img.jpg'
 ---
 
 
 [PACELC theorem](https://en.wikipedia.org/wiki/PACELC_theorem) is the theory purposing the importance of latency and consistency in the distributed systems when they are in the absence of network partitions.
- <!--more-->
+
 > if network **P**artitions: **A**vailiability or **C**onsistency **E**lse: **L**atency or **C**onsistency 
 
 For example, in the normal situation without network partitions, Cassandra (AP database according to CAP theorem) has to pick between consistency and low latency, which Cassandra chooses low latency and introduces the new paradigm, eventual consistency to deal with the consistency. 

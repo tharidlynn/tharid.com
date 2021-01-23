@@ -1,21 +1,21 @@
 ---
 title: "ETL vs ELT?"
+description: 'ในช่วงระยะสองสามปีมานี้ คำว่า ELT เริ่มเป็นที่พูดถึงในวงการ data แทนคำว่า ETL ที่ใช้กันมานาน ครั้งแรกที่ผมได้ยินก็สงสัยเหมือนกันว่ามันดียังไง รู้แค่ว่า database หลายๆเจ้าอย่าง'
 date: '2019-07-01'
 modified_date: '2019-07-01'
+image: '/assets/images/posts/etl.png'
 ---
 
-ในช่วงระยะสองสามปีมานี้ คำว่า ELT เริ่มเป็นที่พูดถึงในวงการ data แทนคำว่า ETL ที่ใช้กันมานาน ครั้งแรกที่ผมได้ยินก็สงสัยเหมือนกันว่ามันดียังไง รู้แค่ว่า database หลายๆเจ้าอย่าง [Redshift](https://www.youtube.com/watch?v=EvDicFx9StE&t=36m00s), [BigQuery](http://www.youtube.com/watch?v=ZVgt1-LfWW4&t=9m20s) หรือ [Snowflake](https://docs.snowflake.net/manuals/user-guide/ecosystem-etl.html) ดูจะพร้อมหน้าพร้อมตาเชียร์กันมาก <!--more-->
+ในช่วงระยะสองสามปีมานี้ คำว่า ELT เริ่มเป็นที่พูดถึงในวงการ data แทนคำว่า ETL ที่ใช้กันมานาน ครั้งแรกที่ผมได้ยินก็สงสัยเหมือนกันว่ามันดียังไง รู้แค่ว่า database หลายๆเจ้าอย่าง [Redshift](https://www.youtube.com/watch?v=EvDicFx9StE&t=36m00s), [BigQuery](http://www.youtube.com/watch?v=ZVgt1-LfWW4&t=9m20s) หรือ [Snowflake](https://docs.snowflake.net/manuals/user-guide/ecosystem-etl.html) ดูจะพร้อมหน้าพร้อมตาเชียร์กันมาก 
 วันนี้ผมจึงถือโอกาสสรุปเรื่องราวความเป็นมาทั้งหมดว่าอันไหนดีกว่ากันและเราควรจะใช้มันหรือไม่ครับ 
 ## Extract Transform Load
 
 ETL ย่อมาจาก Extract Transform Load หรืออธิบายง่ายๆคือย้าย (Extract) data จากที่หนึ่งไปใส่อีกที่หนึ่ง โดยจะทำการ transform data ให้อยู่ในรูปแบบที่เหมาะสมกับ target ที่จะทำการ Load เช่น denormalization, clean หรือ mask anonymous data เป็นต้น
 
-<figure>
-<img src="/img/etl.png" alt="etl" title="etl" style="max-width:80%;" />
-<figcaption>
-https://docs.microsoft.com/en-us/azure/architecture/data-guide/relational-data/etl
-</figcaption>
-</figure>
+
+![etl](@@baseUrl@@/assets/images/posts/etl.png)
+*https://docs.microsoft.com/en-us/azure/architecture/data-guide/relational-data/etl*
+
 
 จะว่าไปนั้น จุดกำเนิดของ ETL น่าจะมาพร้อมๆกับ data warehouse และการทำ data analytics นี้แหล่ะ คือการใช้ database ตัวเดียวเป็นทั้ง OLTP และ OLAP ส่งผลกระทบต่อ perfomance แน่ๆ เขาจึงคิดค้นวิธีการย้าย data ไปยัง database ควบคู่ไปกับ transform ให้อยู่ในรูปแบบที่ Analysts สามารถใช้งานได้ง่ายขึ้น เช่น Kimball Dimensional Modelling แทน
 
@@ -26,12 +26,8 @@ https://docs.microsoft.com/en-us/azure/architecture/data-guide/relational-data/e
 ## Extract Load Transform
 ELT คือการ transform ในตัว database เองเลยหลังจาก Load แทนที่จะ transform ข้างนอกก่อนจะ Load เข้ามาใน target
 
-<figure>
-<img src="/img/elt.jpg" alt="elt" title="elt" style="max-width:100%;" />
-<figcaption>
-https://www.matillion.com/events/etl-vs-elt-whats-big-difference/
-</figcaption>
-</figure>
+![elt](@@baseUrl@@/assets/images/posts/elt.jpg)
+*https://www.matillion.com/events/etl-vs-elt-whats-big-difference/*
 
 
 เหตุผลสำคัญที่ทำให้ ELT paradigm เป็นที่สนใจมากในขณะนี้ มีด้วยกันหลักๆ 2 ประการ
@@ -60,9 +56,8 @@ https://www.matillion.com/events/etl-vs-elt-whats-big-difference/
 
 เราจะเห็นการเกิดของ ELT stack ใหม่เยอะมากๆ ตัวอย่างเช่นใช้ [StitchData](https://www.stitchdata.com/) (ล่าสุดโดน Talend ซื้อไปแล้ว) หรือ [Fivetran](https://fivetran.com/) ทำ EL และ [dbt](https://www.getdbt.com/) ทำ transform ใน data warehouse อย่าง BigQuery, Redshift  และ Snowflake เป็นต้น
 
-<div class="youtube-video">
-{{< youtube id="mcgeYd1WhaM" autoplay="false" >}}
-</div>
+[![](http://img.youtube.com/vi/mcgeYd1WhaM/0.jpg)](http://www.youtube.com/watch?v=mcgeYd1WhaM "")
+*Click the image to play*
 
 โดยสรุปแล้ว จะเห็นเลยว่าฟาก ETL ให้ความสำคัญกับ tools และพิธีรีตองต่างๆมากกว่า ในขณะที่ ELT จะให้สิทธิทั้งหมดในการทำ analytics กับ users เต็ม 100 %
 

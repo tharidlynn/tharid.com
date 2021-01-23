@@ -1,14 +1,15 @@
 ---
 title: "I just found the greatest analogy of rdbms locks"
-description: ''
+description: 'I had looked for a great analogy of an exclusive lock and a shared lock for a long time and today I just found this impressive analogy on the Stackoverflow answered by ArjunShankar ! '
 date: '2019-02-01'
 modified_date: '2019-02-01'
+image: '/assets/images/posts/random-img.jpg'
 
 ---
 
 
 I had looked for a great analogy of an exclusive lock and a shared lock for a long time and today I just found this impressive analogy on the Stackoverflow answered by ArjunShankar ! 
- <!--more-->
+
 For people who don't understand why it's really useful to understand a locked mechanism, you are going to see this topic  in various database topics such as Serializability, Consistency, Linearizability and two phased commits. 
 
 > I wrote this answer down because I thought this would be a fun (and fitting) analogy:
@@ -28,4 +29,4 @@ For people who don't understand why it's really useful to understand a locked me
 > 2. The teacher waits for them to finish reading before she clears the board to write more => If one or more shared locks already exist, exclusive locks cannot be obtained.
 
 
-_[Source] (https://stackoverflow.com/questions/11837428/whats-the-difference-between-an-exclusive-lock-and-a-shared-lock)_
+_[Source](https://stackoverflow.com/questions/11837428/whats-the-difference-between-an-exclusive-lock-and-a-shared-lock)_

@@ -1,12 +1,13 @@
 ---
 title: 'HBase'
-description: 'Hbase'
+description: 'HBase เป็น database ที่สร้างโดยอ้างอิงจาก BigTable paper ของ Google (ในความจริงแล้ว Google contribute และช่วย HBase engineers เยอะมาก)'
 date: '2019-01-01'
 modified_date: '2019-01-01'
+image: '/assets/images/posts/hbase-architecture.png'
 ---
 
-HBase เป็น database ที่สร้างตาม [BigTable paper](https://static.googleusercontent.com/media/research.google.com/en//archive/bigtable-osdi06.pdf
-) ของ Google (ในความจริงแล้ว Google contribute และช่วย HBase engineers เยอะมาก) จึงไม่ต้องแปลกใจที่ในปัจจุบัน เราสามารถใช้ HBase API ในการทำงานร่วมกับ [Google Cloud BigTable](https://cloud.google.com/bigtable) ได้สบายๆ  <!--more-->
+HBase เป็น database ที่สร้างโดยอ้างอิงจาก [BigTable paper](https://static.googleusercontent.com/media/research.google.com/en//archive/bigtable-osdi06.pdf
+) ของ Google (ในความจริงแล้ว Google contribute และช่วย HBase engineers เยอะมาก) จึงไม่ต้องแปลกใจที่ในปัจจุบัน เราสามารถใช้ HBase API ในการทำงานร่วมกับ [Google Cloud BigTable](https://cloud.google.com/bigtable) ได้สบายๆ 
 
 และเนื่องจากทั้ง Cassandra และ HBase ต่างได้รับอิทธิพลมาจาก BigTable เหมือนกัน จึงทำให้มีลักษณะบางอย่างคล้ายคลึงกันเช่น เป็น model แบบ [column family](https://en.wikipedia.org/wiki/Column_family) เป็นต้น แต่ก็มีสิ่งที่แตกต่างกันอย่างเห็นได้ชัด เช่น HBase เป็น CP ใน CAP theorem แต่ Cassandra นั้นกลับเป็น AP แทน
 
@@ -22,17 +23,14 @@ HBase เป็น database ที่สร้างตาม [BigTable paper](h
 
 ## คำศัพท์ในโลกของ HBase
 
-<figure>
-<img src="/img/hbase-architecture.png" alt="hbase-architecture" title="hbase-architecture" style="max-width:80%;" />
-<figcaption>
-https://mapr.com/blog/in-depth-look-hbase-architecture/
-</figcaption>
-</figure>
+![hbase-architecture](@@baseUrl@@/assets/images/posts/hbase-architecture.png)
+*https://mapr.com/blog/in-depth-look-hbase-architecture/*
+
 
 * Namespace: กลุ่มของ tables หลายๆอัน เหมือน database ใน MySQL
 * Column family: กลุ่ม columns หลายๆแถว หรือ table
 * HMaster: เป็นคนกลางเชื่อมระหว่าง client กับ server เพื่อส่ง metadata ให้กับ client และยังทำหน้าที่คุยกับ Zookeeper 
-_Note: ควรมี stanby HMaster ให้ failover เนื่องจากอาจเกิดปัญหา HMaster crash ได้_ 
+> Note: ควรมี stanby HMaster ให้ failover เนื่องจากอาจเกิดปัญหา HMaster crash ได้
 * Region server: คอยจัดการ data ที่เข้ามา
 * Region: partition (data in some range of rows) หรือ column family/table
 * Zookeeper: เป็นเหมือนผู้ช่วยของ HMaster ในการจัดการ configuration ของทุก node, เก็บตำแหน่งของ node ใน meta table, track state และยัง monitor region server ต่างๆให้ทำงานร่วมกันได้
@@ -91,11 +89,7 @@ _Note: ควรมี stanby HMaster ให้ failover เนื่องจ�
 
 ดังนั้น architecture ของ Google cloud BigTable จะแตกต่างกับ BigTable เดิมๆของ Google ตรงที่ compute node ของ Google cloud BigTable จะใช้หลักการ pointers ไปยัง Colossus ด้วยวิธีนี้การ rebalance จึงทำได้ง่ายกว่าแต่เดิมเยอะ
 
-<figure>
-<img src="/img/bigtable.png" alt="bigtable" title="bigtable" style="max-width:80%;" />
-<figcaption>
-processing สามารถ rebalance ด้วยการ เปลี่ยน pointers แทนการ move data แบบเดิมๆ
-</figcaption>
-</figure>
+![bigtable](@@baseUrl@@/assets/images/posts/bigtable.png)
+*processing สามารถ rebalance ด้วยการ เปลี่ยน pointers แทนการ move data แบบเดิมๆ*
 
 

@@ -1,11 +1,13 @@
 ---
 title: 'สรุป SSTable & B-tree index'
+description: 'สรุป SSTable & B-tree index สำหรับผม หากอ่านไม่รู้เรื่องต้องขออภัยเป็นอย่างสูงครับ ไว้มีโอกาสจะปรับปรุงให้คนอื่นอ่านเข้าใจด้วย'
 date: '2019-01-10'
 modified_date: '2019-01-10'
+image: '/assets/images/posts/random-img.jpg'
 ---
 
-SSTable vs B-Tree
-<!--more-->
+สรุป SSTable & B-tree index สำหรับผม หากอ่านไม่รู้เรื่องต้องขออภัยเป็นอย่างสูงครับ ไว้มีโอกาสจะปรับปรุงให้คนอื่นอ่านเข้าใจด้วย
+
 ## SSTable 
 * การ write ที่เร็วที่สุดคือการทำ sequential write (append log) เนื่องจากมี disk seek operation ของ disk ที่ต่ำที่สุด
 * นี้คือเหตุผลที่ Kafka Cassandra และ HBase write เร็ว 
@@ -64,7 +66,7 @@ SSTable vs B-Tree
 * ข้อเสียคือ every index after inserting, deleting has to change structure thus use it only when you need. It might make your system slower.
 
 
-References
+#### References
 
 * [Designing Data-Intensive Applications](https://dataintensive.net/)
 * [Flavors of IO](https://medium.com/databasss/on-disk-io-part-1-flavours-of-io-8e1ace1de017)

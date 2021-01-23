@@ -12,17 +12,17 @@ export type IPaginationProps = {
 const Pagination = (props: IPaginationProps) => (
   <div className="text-sm flex justify-between">
     {props.previous && (
-      <div>
+      <div className="text-base">
         <Link href={convertUrlToLinkHref(props.previous)} as={props.previous}>
-          <a>← Newer Posts</a>
+          <a className="text-blue-500 hover:text-blue-700">← Newer Posts</a>
         </Link>
       </div>
     )}
 
     {props.next && (
-      <div className="text-right ml-auto">
+      <div className="text-right ml-auto text-base">
         <Link href={convertUrlToLinkHref(props.next)} as={props.next}>
-          <a>Older Posts →</a>
+          <a className="text-blue-500 hover:text-blue-700">Older Posts →</a>
         </Link>
       </div>
     )}

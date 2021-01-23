@@ -1,10 +1,11 @@
 ---
 title: 'มีอะไรใหม่ใน Spark 2.X+'
-description: ''
+description: 'สิ่งที่เปลี่ยนไปหลักๆของ version 2.x+ คือการใช้ Dataframe/Dataset แทน ​RDD แบบเก่าๆที่ยากกว่า:'
 date: '2019-02-27'
 modified_date: '2019-02-27'
+image: '/assets/images/posts/spark-structured-streaming-watermark.png'
 ---
-<!--more-->
+
 1. SparkSession เป็น entrypoint ของ Spark API's ทั้งหมด (SparkContext และ SqlContext อยู่ใต้ร่มเงาของ SparkSession)  
 2. SqlContext รวมร่างกับ HiveContext แล้ว 
 3. Default datatype ของ SparkSession คือ Dataframe และ Dataset
@@ -13,12 +14,8 @@ modified_date: '2019-02-27'
 
 สิ่งที่เปลี่ยนไปหลักๆของ version 2.x+ คือการใช้ Dataframe/Dataset แทน ​RDD แบบเก่าๆที่ยากกว่า:
 
-<figure>
-<img src="/img/catalyst-optimizer-diagram.png" alt="catalyst-optimizer-diagram" title="catalyst-optimizer-diagram" style="max-width:80%;" />
-<figcaption>
-https://databricks.com/blog/2016/06/22/apache-spark-key-terms-explained.html
-</figcaption>
-</figure>
+![catalyst-optimizer-diagram](@@baseUrl@@/assets/images/posts/catalyst-optimizer-diagram.png)
+*https://databricks.com/blog/2016/06/22/apache-spark-key-terms-explained.html*
 
 
 * Spark RDD เจอปัญหาเรื่อง optimization เนื่องจากมัน low level, ผลักภาระทุกอย่างให้ users เป็นคนทำ optimize เอง และ serialization overhead ในการ communicate ระหว่าง node
@@ -64,25 +61,17 @@ Spark Streaming ถูกอออกแบบมาบนพื้นฐาน�
 
 Spark Structured Streaming  ถูกสร้างอยู่บนพื้นฐานของ Dataframe โดยการมอง unbounded data streams ให้เป็น virtual tables ใหญ่ๆที่ทุกๆ records จะมา append ต่อท้ายไปเรื่อยๆเพื่อความเร็วในการคิดและดึงประสิทธิภาพจาก Dataframe/Dataset  ให้สูงที่สุด
 
-<figure>
-<img src="/img/spark-structured-streaming-table.png
-" alt="spark-structured-streaming-table" title="spark-structured-streaming-table" style="max-width:80%;" />
-<figcaption>
-https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#programming-model
-</figcaption>
-</figure>
+![spark-structured-streaming-table](@@baseUrl@@/assets/images/posts/spark-structured-streaming-table.png)
+*https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#programming-model*
 
 
 เนื่องจากงานบางประเภทจำเป็นต้องเก็บ intermediate value เพื่อใช้ในการทำ stateful processing เช่น groupby, count, sum 
 Spark structured streaming จำเป็นต้องหาวิธีจัดการ save ค่า state ชั่วคราวไว้สำหรับ trigger ในรอบต่อๆไป จึงต้องทำการ dump ค่าใน internal memory ลงไปใน persistent store อย่าง HDFS
 
-<figure>
-<img src="/img/spark-structured-streaming-checkpoint.png
-" alt="spark-structured-streaming-checkpoint" title="spark-structured-streaming-checkpoint" style="max-width:100%;" />
-<figcaption>
-https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#programming-model
-</figcaption>
-</figure>
+![spark-structured-streaming-checkpoint](@@baseUrl@@/assets/images/posts/spark-structured-streaming-checkpoint.png)
+*https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#programming-model*
+
+
 
 อย่าสับสนกันครับ เพราะจริงๆ Checkpoints มี 2 แบบ (อ่านต่อเพิ่มเติมได้ที่ [Spark streaming doc](http://spark.apache.org/docs/latest/streaming-programming-guide.html#checkpointing))
 
@@ -92,13 +81,8 @@ https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html
 
 อีกเรื่องที่ Spark เพิ่มเข้ามาคือ concept ของ event time เพื่อใช้จัดการกับ late data ได้ ซึ่งมีประโยชน์มากๆในการทำ aggregation เพราะเพิ่มความแม่นยำกว่าการใช้ processing time แบบเดิมๆเพียงอย่างเดียว
 
-<figure>
-<img src="/img/spark-structured-streaming-late-data.png
-" alt="spark-structured-streaming-late-data" title="spark-structured-streaming-late-data" style="max-width:100%;" />
-<figcaption>
-https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#handling-late-data-and-watermarking
-</figcaption>
-</figure>
+![spark-structured-streaming-late-data](@@baseUrl@@/assets/images/posts/spark-structured-streaming-late-data.png)
+*https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#handling-late-data-and-watermarking*
 
 
 > Event time คือ timestamp ของ event ที่เกิดขึ้นจริงๆบนโลก เช่น หากเราเล่นเกมบนมือถือแล้วชนะ ตัวเกมก็จะสร้าง event time ขึ้นมาและส่งไปยัง server เพื่อบอกว่าเราชนะเกมนี้แล้วนะ เอาไปขึ้น leaderboard เลย แต่หากแบตดันหมดกระทันหัน ตัว event นี้ก็จะถูก delay ออกไป และกว่าเราจะหาที่ชาร์ตแบตเจอ ก็อาจช้าไปเป็นชั่วโมง หากเป็น Spark แบบเก่าจะมองแค่ Processing time หรือเวลาที่ event ถูก process ในระบบ เมื่อเป็นแบบนี้มันก็คงไม่แฟร์กับคนเล่นเกมเพราะแทนที่เราจะได้เป็นที่ 1 ของ leaderboard กลับกลายเป็นช้าไปเป็นชั่วโมง
@@ -107,13 +91,8 @@ https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html
 
 วิธีคิด Watermark คือ max(event time) - your watermark time จะได้ range ที่เรายอมรับ late data นั้นให้ยังคงอยู่ใน windows นั้นๆได้
 
-<figure>
-<img src="/img/spark-structured-streaming-watermark.png
-" alt="spark-structured-streaming-watermark" title="spark-structured-streaming-watermark" style="max-width:100%;" />
-<figcaption>
-https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#handling-late-data-and-watermarking
-</figcaption>
-</figure>
+![spark-structured-streaming-watermark](@@baseUrl@@/assets/images/posts/spark-structured-streaming-watermark.png)
+*https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#handling-late-data-and-watermarking*
 
 
 โจทย์ใหญ่อีกโจทย์ที่ Spark ต้องแก้คือการให้ Spark หลุดออกจาก Micro-batching ให้ได้เพื่อเป็น native continuous streaming เหมือนที่ Flink และ Kafka Streams เป็น เพื่อประสิทธิภาพที่ดีขึ้น และช่วย resources ให้ดีขึ้นเพราะไม่จำเป็นต้อง schedule และ trigger Spark jobs ทุกๆครั้ง แต่ใช้การ submit long running job  ทิ้งไว้นานๆครั้งเดียวเลย 

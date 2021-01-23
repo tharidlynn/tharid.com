@@ -3,7 +3,7 @@ title: 'ก้าวต่อไปกับ Amazon Aurora'
 description: 'ย้อนกลับไปเมื่อปี 2007 Amazon ต้องการแก้ปัญหาในบริษัทที่มีปัญหากับ relational database แบบเดิมๆ เนื่องจากการ scale write ของ SQL ทำได้ลำบาก'
 date: '2019-04-02'
 modified_date: '2019-04-02'
-image: /assets/images/posts/random-img.jpg
+image: '/assets/images/posts/aurora-mysql.webp'
 ---
 
 
